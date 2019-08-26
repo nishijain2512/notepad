@@ -1,11 +1,11 @@
 import React from 'react';
+import List from './containers/List/List';
+//import Layout from './hoc/Layout';
 
 function App() {
   return (
-    <div>
-      <h1>NOTEPAD</h1>
-    </div>
+    <List />
   );
-}
+} 
 
 export default App;
