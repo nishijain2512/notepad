@@ -32,30 +32,15 @@ class List extends Component {
             ]
         }
         ]
-    }   
+    }
 
-    showListData () {
+    showListData() {
 
     }
 
     render() {
         const listData = this.state.list.map(currentList => {
-            const items = currentList.listItems.map(item => {
-                return(
-                    <tr>
-                        <td>{item}</td>
-                    </tr>
-                )
-            })
-            return (
-                <table>
-                    <tr>
-                        <th>{currentList.listName}</th>
-                    </tr>
-                    {items}
-                </table>
-            )
-
+            return <ListTable list={currentList}></ListTable>
         })
 
         return (
@@ -68,6 +53,29 @@ class List extends Component {
     }
 
 
+}
+
+function ListItems(props) {
+    let items = props.listItems;
+    let rows = [];
+    items.forEach(item => {
+        let row = <tr>{item}</tr>
+        rows.push(row);
+    });
+    return rows;
+}
+
+function ListTable(props) {
+    let list = props.list;
+    const items = <ListItems listItems={list.listItems}></ListItems>
+    return (
+        <table>
+            <tr>
+                <th>{list.listName}</th>
+            </tr>
+            {items}
+        </table>
+    )
 }
 
 export default List;
