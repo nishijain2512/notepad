@@ -14,6 +14,15 @@
     justify-content: space-between;
     z-index: 90;
 }
+
 .NavigationBar a {
     padding: 0 8px;
 }
+
+.NavigationBar input {
+    resize: both;
+    height: 50%;
+    border: 0;
+    text-align: center;
+}
+

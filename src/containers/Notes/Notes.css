@@ -1,0 +1,14 @@
+.Notes {
+    width: 100%;
+    height: 87vh;
+    background-color: rgb(236, 113, 113);
+}
+
+.Notes textarea {
+    width: 100%;
+    height: 87vh;
+    background-color: rgb(109, 241, 142);
+    resize: none;
+    overflow-y: auto;
+    font-size: 15px;
+}

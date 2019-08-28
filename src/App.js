@@ -1,10 +1,12 @@
 import React from 'react';
-import List from './containers/List/List';
-//import Layout from './hoc/Layout';
+import Notes from './containers/Notes/Notes';
+import Layout from './hoc/Layout/Layout';
 
 function App() {
   return (
-    <List />
+    <Layout>
+      <Notes />
+    </Layout>
   );
 } 
 
