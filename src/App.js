@@ -12,6 +12,7 @@ function App() {
         <Switch>
           <Route path="/DisplayNote" component={DisplayNote}/>
           <Route path="/EditNote" component={EditNote}/>
+          <Route path="/NewNote" component={EditNote}/>
           <Route path="/Lists" component={Lists}/>
           <Route path="/" exact component={Lists}/>
           <Redirect to="/" />

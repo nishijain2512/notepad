@@ -1,21 +1,30 @@
 import React, {Component} from 'react';
 import {withRouter} from 'react-router-dom';
+import axios from '../../../axios-notes';
 import classes from './EditNote.css';
 
 class Notes extends Component {
-    // constructor (props) {
-    //     super (props);
-    //     this.state = {
-    //         notes : [
-    //             { title:'1', details:'11'},
-    //             { title:'2', details:'22'}
-    //         ],
-    //         tempNote : {
-    //             title : 'Title',
-    //             details : 'Write your thoughts'
-    //         }
-    //     }
-    // }
+    constructor (props) {
+        super (props);
+        if (this.props.location.pathname === '/EditNote') {
+            this.state = {
+                tempNote : {
+                    title : this.props.location.state.noteData.title,
+                    details : this.props.location.state.noteData.details,
+                    id : this.props.location.state.noteData.id
+                },
+                savedInDatabase: false
+            }
+        } else {
+            this.state = {
+                tempNote : {
+                    title : 'Enter Title',
+                    details : 'Enter your notes details here'
+                }
+            }
+        }
+        
+    }
 
     inputTextHandler = (event) => {
         event.preventDefault();
@@ -35,9 +44,57 @@ class Notes extends Component {
         this.setState({tempNote: updatedTempNoteDetails});
     }
 
+    updateDatabase = () => {
+        if(this.props.location.pathname === '/NewNote') {
+            axios.post('/notes.json', this.state.tempNote)
+                .then (response => {
+                    this.setState({
+                        ...this.state,
+                        savedInDatabase: true
+                    })
+                })
+                .catch (error => {
+                    console.log('Data cant be saved beccause of error : ' + error );
+                });
+        } else {
+            axios.put('https://notepad-bacc6.firebaseio.com/notes/' + this.state.tempNote.id + '.json', this.state.tempNote)
+                .then (response => {
+                    this.setState({
+                        ...this.state,
+                        savedInDatabase: true
+                    })
+                })
+                .catch (error => {
+                    console.log('Data cant be saved beccause of error : ' + error );
+                });
+        }
+    }
+
     doneButtonClicked = () => {
         //Done button will save note, exit from note page and take the user to listview.
         console.log('Done button clicked');
+        if (this.state.savedInDatabase) {
+            this.props.history.push('/');
+        }else {
+            if(this.props.location.pathname === '/NewNote') {
+                axios.post('/notes.json', this.state.tempNote)
+                    .then (response => {
+                        this.props.history.push('/');
+                    })
+                    .catch (error => {
+                        console.log('Data cant be saved beccause of error : ' + error );
+                    });
+            } else {
+                axios.put('https://notepad-bacc6.firebaseio.com/notes/' + this.state.tempNote.id + '.json', this.state.tempNote)
+                    .then (response => {
+                        this.props.history.push('/');
+                    })
+                    .catch (error => {
+                        console.log('Data cant be saved beccause of error : ' + error );
+                    });
+            }
+        }
+        
     }
 
     cancelButtonClicked = () => {
@@ -46,24 +103,18 @@ class Notes extends Component {
     }
 
     saveButtonClicked = () => {
-        //Save button saves the tempNote data in notes array.
-        console.log('Save button clicked');
-        let newNotes = [...this.state.notes];
-        newNotes.push({
-            title: this.state.tempNote.title,
-            details: this.state.tempNote.details}
-        );
-        this.setState({notes: newNotes});
+        //Save button saves the tempNote data in database.
+        this.updateDatabase();
     }
 
     render () {
-
+        
         return(
             <div className={classes.Notes}>
                 <form>
                     <input 
                         type="text" 
-                        value={this.props.location.state.noteData.title} 
+                        value={this.state.tempNote.title} 
                         onChange={this.inputTextHandler} />
                     <input 
                         type="button" 
@@ -72,7 +123,7 @@ class Notes extends Component {
                     <input type="button" value="Done" onClick={this.doneButtonClicked}/>
                     <input type="button" value="Cancel" onClick={this.cancelButtonClicked}/>
                     <textarea 
-                        value={this.props.location.state.noteData.details} 
+                        value={this.state.tempNote.details} 
                         onChange={this.textareaHandler} />>
                 </form>
             </div>

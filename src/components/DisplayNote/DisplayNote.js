@@ -1,6 +1,7 @@
 import React, {Component} from 'react';
 import {withRouter} from 'react-router-dom';
 import classes from './DisplayNote.css';
+import axios from '../../axios-notes'
 
 class DisplayNote extends Component {
 
@@ -15,12 +16,23 @@ class DisplayNote extends Component {
     doneButtonClicked =()=> {
         this.props.history.goBack();
     }
+
+    deleteButtonClicked = () => {
+        axios.delete('/notes/' + this.props.location.state.noteData.id + '.json')
+                .then (response => {
+                    console.log('Data deleted successfully');
+                    this.props.history.goBack();
+                })
+                .catch (error => {
+                    console.log('Data cant be saved beccause of error : ' + error );
+                });
+    }
     
     render() {
         return(
             <div className={classes.DisplayNote}>
                 <form>
-                    <label for='title'>{this.props.location.state.noteData.title}</label>
+                    <label htmlFor='title'>{this.props.location.state.noteData.title}</label>
                     <input 
                         type="button"
                         value='Edit'
@@ -29,8 +41,12 @@ class DisplayNote extends Component {
                         type="button"
                         value='Done'
                         onClick={this.doneButtonClicked} />
+                    <input 
+                        type="button"
+                        value='Delete'
+                        onClick={this.deleteButtonClicked} />
                     <br />
-                    <label for='details'>{this.props.location.state.noteData.details}</label>
+                    <label htmlFor='details'>{this.props.location.state.noteData.details}</label>
                 </form>
             </div>
         );
