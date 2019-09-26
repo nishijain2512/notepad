@@ -1,8 +1,29 @@
-import React, {Component} from 'react';
-import classes from './Lists.css';
-import axios from '../../axios-notes';
+import React, { Component } from 'react';
+import PropTypes from 'prop-types';
+import axios from '../axios-notes';
+import { makeStyles, withStyles } from '@material-ui/core/styles';
+import Table from '@material-ui/core/Table';
+import TableBody from '@material-ui/core/TableBody';
+import TableCell from '@material-ui/core/TableCell';
+import TableHead from '@material-ui/core/TableHead';
+import TableRow from '@material-ui/core/TableRow';
+import Paper from '@material-ui/core/Paper';
 
-class Lists extends Component {
+const useStyles = makeStyles(theme => ({
+  root: {
+    width: '100%',
+    marginTop: theme.spacing(3),
+    overflowX: 'auto',
+  },
+  table: {
+    minWidth: 650,
+  },
+  tableHearder: {
+    font: 'bold',
+  },
+}));
+
+class ListPage extends Component {
     state = {   
         notes : [],
         temp: false
@@ -43,45 +64,41 @@ class Lists extends Component {
         });
     }
 
-    // newNoteButtonClicked = () => {
-    //     console.log('New Note button clicked');
-    //     let newNote = {
-    //         title: 'Title',
-    //         details: 'write your thoughts'
-    //     };
-    //     this.props.history.push({
-    //         pathname: '/NewNote',
-    //         state: {noteData : newNote}
-    //     });
-    // }
-
     render () {
-        console.log('inside render');
+        const {classes} = this.props;
+
         let notesItems = this.state.notes.map(item => {
             console.log('inside render -> notesItems');
             return(
-                <tr key={item.id} onClick={() => this.noteSelected(item.id)}>
-                    <td>{item.title}</td>
-                    <td align="left">{item.details}</td>
-                </tr>   
+                <TableRow key={item.id} onClick={() => this.noteSelected(item.id)}>
+                    <TableCell component="th" scope="row" width="20%">
+                      {item.title}
+                    </TableCell>
+                    <TableCell align="left">{item.details}</TableCell>
+                  </TableRow>   
             )
         })
-        
-        
+
         return (
-            <div className={classes.Lists}>
-                <table>
-                    <tbody>
-                        <tr>
-                            <th>NOTES</th>
-                        </tr>
+            <Paper className={classes.root}>
+                <Table className={classes.table} size="small">
+                    <TableHead className={classes.tableHearder}>
+                        <TableRow>
+                        <TableCell>Title</TableCell>
+                        <TableCell align="left">Description</TableCell>
+                        </TableRow>
+                    </TableHead>
+                    <TableBody>
                         {notesItems}
-                    </tbody>
-                </table>
-            </div>
-            
+                    </TableBody>
+                </Table>
+          </Paper>
         );
     }
+}
+
+ListPage.propTypes = {
+    classes: PropTypes.object.isRequired,
 };
 
-export default Lists;
+export default withStyles(useStyles)(ListPage);

@@ -1,23 +1,22 @@
 import React from 'react';
 import {Route, Redirect, Switch, withRouter} from 'react-router-dom';
-import DisplayNote from './components/DisplayNote/DisplayNote';
-import EditNote from './containers/Note/EditNote/EditNote';
-import Lists from './containers/Lists/Lists';
-import Layout from './hoc/Layout/Layout';
+import ListPage from '../src/containers/listPage';
+import DisplayNote from './components/displayNote';
+import EditNote from './containers/EditNote';
+import TopNav from '../src/components/topNav';
 
 function App() {
   return (
     <div>
-      <Layout>
+        <TopNav />
         <Switch>
           <Route path="/DisplayNote" component={DisplayNote}/>
           <Route path="/EditNote" component={EditNote}/>
           <Route path="/NewNote" component={EditNote}/>
-          <Route path="/Lists" component={Lists}/>
-          <Route path="/" exact component={Lists}/>
+          <Route path="/ListPage" component={ListPage}/>
+          <Route path="/" exact component={ListPage}/>
           <Redirect to="/" />
         </Switch>
-      </Layout>
     </div>
   );
 } 
