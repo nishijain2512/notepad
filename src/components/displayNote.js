@@ -27,31 +27,29 @@ class DisplayNote extends Component {
     bottomNavigationClickHandler = (event, value) => {
         switch (value) {
             case 0: 
-                console.log('Edit button clicked');
                 const path = '/EditNote/' + this.props.location.state.noteData.id;
-                console.log(path);
                 this.props.history.push({
                     pathname : '/EditNote/' + this.props.location.state.noteData.id,
                     state : {noteData : this.props.location.state.noteData}
                 });
                 break;
             case 1: 
-                console.log('Done button clicked');
                 this.props.history.goBack();
                 break;
             case 2: 
-                console.log('Delete button clicked');
-                axios.delete('/notes/' + this.props.location.state.noteData.id + '.json')
-                .then (response => {
-                    console.log('Data deleted successfully');
+                //axiox.delete does support a request body. It accepts two parameters: url and optional 
+                //config. You can use config.data to set the response body as follows:
+                //axios.delete(url, { data: { foo: "bar" } });
+                //On backend, req.body will be data here n so req.body.foo -> "bar"
+                axios.delete('http://localhost:5000/notes', {data: {id: this.props.location.state.noteData.id}})
+                    .then (response => {
                     this.props.history.goBack();
-                })
-                .catch (error => {
+                    })
+                    .catch (error => {
                     console.log('Data cant be saved beccause of error : ' + error );
-                });
+                    });
                 break;
             default:
-                console.log('inside clickhandler switch');
                 break;
         }
     };

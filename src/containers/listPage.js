@@ -30,7 +30,7 @@ class ListPage extends Component {
     };
 
     componentDidMount () {
-        axios.get('https://notepad-bacc6.firebaseio.com/notes.json')
+        axios.get('http://localhost:5000/Lists')
             .then(response => {
                 const fetchedNotes = [];
                 for (let key in response.data) { //while fetching data from firebase, we dont get data in the form of array.
@@ -43,8 +43,6 @@ class ListPage extends Component {
                     ...this.state,
                     notes: fetchedNotes
                 });
-            console.log('Inside componentDidMount');
-            console.log(this.state);
             })
             .catch(error => console.log('Error while fetching notes' + error));
     }
@@ -57,7 +55,6 @@ class ListPage extends Component {
             }
             return selectedNote;
         })
-        console.log('Selected note title: ' + selectedNote.title);
         this.props.history.push({
             pathname: '/DisplayNote',
             state: {noteData : selectedNote}
@@ -68,7 +65,6 @@ class ListPage extends Component {
         const {classes} = this.props;
 
         let notesItems = this.state.notes.map(item => {
-            console.log('inside render -> notesItems');
             return(
                 <TableRow key={item.id} onClick={() => this.noteSelected(item.id)}>
                     <TableCell component="th" scope="row" width="20%">

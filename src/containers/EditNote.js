@@ -79,7 +79,7 @@ class EditNote extends Component {
 
     updateDatabase = () => {
         if(this.props.location.pathname === '/NewNote') {
-            axios.post('/notes.json', this.state.tempNote)
+            axios.post('http://localhost:5000/notes', this.state.tempNote)
                 .then (response => {
                     this.setState({
                         ...this.state,
@@ -87,10 +87,10 @@ class EditNote extends Component {
                     })
                 })
                 .catch (error => {
-                    console.log('Data cant be saved beccause of error : ' + error );
+                    console.log('New data cant be saved beccause of error : ' + error );
                 });
         } else {
-            axios.put('https://notepad-bacc6.firebaseio.com/notes/' + this.state.tempNote.id + '.json', this.state.tempNote)
+            axios.put('http://localhost:5000/notes', this.state.tempNote)
                 .then (response => {
                     this.setState({
                         ...this.state,
@@ -98,32 +98,31 @@ class EditNote extends Component {
                     })
                 })
                 .catch (error => {
-                    console.log('Data cant be saved beccause of error : ' + error );
+                    console.log('Existing data cant be modified beccause of error : ' + error );
                 });
         }
     }
 
     doneButtonClicked = () => {
         //Done button will save note, exit from note page and take the user to listview.
-        console.log('Done button clicked');
         if (this.state.savedInDatabase) {
             this.props.history.goBack();
         }else {
             if(this.props.location.pathname === '/NewNote') {
-                axios.post('/notes.json', this.state.tempNote)
+                axios.post('http://localhost:5000/notes', this.state.tempNote)
                     .then (response => {
                         this.props.history.goBack();
                     })
                     .catch (error => {
-                        console.log('Data cant be saved beccause of error : ' + error );
+                        console.log('New data cant be saved beccause of error : ' + error );
                     });
             } else {
-                axios.put('https://notepad-bacc6.firebaseio.com/notes/' + this.state.tempNote.id + '.json', this.state.tempNote)
+                axios.put('http://localhost:5000/notes', this.state.tempNote)
                     .then (response => {
                         this.props.history.push('/');
                     })
                     .catch (error => {
-                        console.log('Data cant be saved beccause of error : ' + error );
+                        console.log('done Existing data cant be modified beccause of error : ' + error );
                     });
             }
         }
@@ -133,21 +132,17 @@ class EditNote extends Component {
     bottomNavigationClickHandler = (event, value) => {
         switch (value) {
             case 0: 
-                console.log('Save button clicked');
                 //Save button saves the tempNote data in database.
                 this.updateDatabase();
                 break;
             case 1: 
-                console.log('Done button clicked');
                 this.doneButtonClicked();
                 break;
             case 2: 
-                console.log('Cancel button clicked');
                 //will exit the notepage without saving tempnote to notes array.
                 this.props.history.goBack();
                 break;
             default:
-                console.log('inside clickhandler switch');
                 break;
         }
     }
