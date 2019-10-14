@@ -4,6 +4,7 @@ import ListPage from '../src/containers/listPage';
 import DisplayNote from './components/displayNote';
 import EditNote from './containers/EditNote';
 import TopNav from '../src/components/topNav';
+import DevMode from './components/devMode';
 
 function App() {
   return (
@@ -14,6 +15,7 @@ function App() {
           <Route path="/EditNote" component={EditNote}/>
           <Route path="/NewNote" component={EditNote}/>
           <Route path="/ListPage" component={ListPage}/>
+          <Route path="/dev" component={DevMode}/>
           <Route path="/" exact component={ListPage}/>
           <Redirect to="/" />
         </Switch>
